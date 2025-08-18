@@ -6,8 +6,8 @@ sealed class ListItem{
 }
 
 data class Tarea(
-    val id: Int,
-    val titulo: String,
-    val descripcion: String,
-    val completada: Boolean
+    var id: Int,
+    var titulo: String,
+    var descripcion: String,
+    var completada: Boolean
 )

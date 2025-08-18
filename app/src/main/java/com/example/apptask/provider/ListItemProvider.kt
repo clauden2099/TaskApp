@@ -1,5 +1,7 @@
-package com.example.apptask
+package com.example.apptask.provider
 
+import com.example.apptask.ListItem
+import com.example.apptask.Tarea
 
 class ListItemProvider {
     companion object {

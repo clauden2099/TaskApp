@@ -74,4 +74,9 @@ class ListAdapter(
             ListItem.AddButton -> VIEW_TYPE_ADD
         }
     }
+
+    fun updateList(items: List<ListItem>) {
+        this.items = items
+        notifyDataSetChanged()
+    }
 }
