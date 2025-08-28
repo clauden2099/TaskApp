@@ -1,11 +1,8 @@
-package com.example.apptask.provider
-
-import com.example.apptask.ListItem
-import com.example.apptask.Tarea
+package com.example.apptask.data
 
 class ListItemProvider {
     companion object {
-        val items = listOf<ListItem>(
+        var items = mutableListOf<ListItem>(
             ListItem.Categorias(
                 id = 1,
                 nombre = "Personal",

@@ -1,4 +1,4 @@
-package com.example.apptask
+package com.example.apptask.data
 
 sealed class ListItem{
     data class Categorias(val id:Int, val nombre:String, val tareas:MutableList<Tarea>, var isSelected: Boolean = false) : ListItem()

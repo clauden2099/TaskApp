@@ -1,11 +1,11 @@
-package com.example.apptask.adapter
+package com.example.apptask.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apptask.AddCategoriaViewHolder
-import com.example.apptask.CategoriasViewHolder
-import com.example.apptask.ListItem
+import com.example.apptask.ui.list.adapter.AddCategoriaViewHolder
+import com.example.apptask.ui.list.adapter.CategoriasViewHolder
+import com.example.apptask.data.ListItem
 import com.example.apptask.R
 
 class ListAdapter(

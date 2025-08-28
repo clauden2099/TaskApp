@@ -1,11 +1,11 @@
-package com.example.apptask.adapter
+package com.example.apptask.ui.task.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptask.R
-import com.example.apptask.Tarea
-import com.example.apptask.TaskViewHolder
+import com.example.apptask.data.Tarea
+import com.example.apptask.ui.task.adapter.TaskViewHolder
 
 class TaskAdapter(private var tasks: List<Tarea>, private val onCheckChanged: (Int, Boolean) -> Unit,) : RecyclerView.Adapter<TaskViewHolder>() {
 

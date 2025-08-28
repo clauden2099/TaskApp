@@ -1,8 +1,10 @@
-package com.example.apptask
+package com.example.apptask.ui.list.adapter
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apptask.R
+import com.example.apptask.data.ListItem
 
 class CategoriasViewHolder(view: View): RecyclerView.ViewHolder(view) {
 

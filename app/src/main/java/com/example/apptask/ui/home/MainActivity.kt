@@ -1,4 +1,4 @@
-package com.example.apptask
+package com.example.apptask.ui.home
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,15 +9,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apptask.adapter.ListAdapter
-import com.example.apptask.adapter.TaskAdapter
-import com.example.apptask.provider.ListItemProvider
+import com.example.apptask.R
+import com.example.apptask.data.ListItem
+import com.example.apptask.data.Tarea
+import com.example.apptask.domain.usecase.Categories
+import com.example.apptask.ui.list.adapter.ListAdapter
+import com.example.apptask.ui.task.adapter.TaskAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
+    //categorias
+    private val categories = Categories()
+
     //RecyclerView de las categorias
-    private lateinit var rvCategorias: RecyclerView
+    private lateinit var rvCategories: RecyclerView
 
     //RecyclerView de las tares
     private lateinit var rvTask: RecyclerView
@@ -26,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAddTask: FloatingActionButton
 
     //Conviete la lista de items a una mutableList
-    private var itemsMutableList: MutableList<ListItem> = ListItemProvider.items.toMutableList()
+    private var itemsMutableList = mutableListOf<ListItem>()
 
     //Lista de tareas
     private var taskMutableList: MutableList<Tarea> = mutableListOf()
@@ -44,7 +50,14 @@ class MainActivity : AppCompatActivity() {
         cargarTareas()
         initComponents()
         initUI()
+        loadCategories()
         initListeners()
+    }
+
+    private fun loadCategories() {
+        itemsMutableList.clear()
+        itemsMutableList.addAll(categories.getCategories())
+        listAdapter.notifyDataSetChanged()
     }
 
     private fun initListeners() {
@@ -54,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initComponents() {
-        rvCategorias = findViewById(R.id.rvCategorias)
+        rvCategories = findViewById(R.id.rvCategorias)
         rvTask = findViewById(R.id.rvTareas)
         fabAddTask = findViewById(R.id.fabAdTask)
     }
@@ -71,9 +84,9 @@ class MainActivity : AppCompatActivity() {
             itemsMutableList,
             categoryClick = { position -> categoriaSelecionada(position) },
             onAddClick = { agregarCategoria() })
-        rvCategorias.layoutManager =
+        rvCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rvCategorias.adapter = listAdapter
+        rvCategories.adapter = listAdapter
     }
 
     private fun initTaskAdapter() {
@@ -88,40 +101,18 @@ class MainActivity : AppCompatActivity() {
     private fun agregarCategoria() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_task)
-        val btnAddList: Button = dialog.findViewById(R.id.btnAddList)
-        val etList: EditText = dialog.findViewById(R.id.etList)
+        val btnAdd: Button = dialog.findViewById(R.id.btnAddList)
+        val etName: EditText = dialog.findViewById(R.id.etList)
 
-        btnAddList.setOnClickListener {
-            val nameList = etList.text.toString()
-            if (nameList.isNotEmpty()) {
-                val newId =
-                    (itemsMutableList.filterIsInstance<ListItem.Categorias>().maxOfOrNull { it.id }
-                        ?: 0) + 1
-                val nuevaCategoria = ListItem.Categorias(
-                    id = newId,
-                    nombre = nameList,
-                    tareas = mutableListOf(),
-                    isSelected = true // ✅ Seleccionamos automáticamente
-                )
-
-                // 🔄 Desmarcar todas las demás categorías
-                itemsMutableList.forEach {
-                    if (it is ListItem.Categorias) it.isSelected = false
+        btnAdd.setOnClickListener {
+            val name = etName.text.toString().trim()
+            if (name.isNotEmpty()) {
+                if (categories.addCategory(name)) {
+                    loadCategories() // ✅ Recargar lista completa
+                    dialog.dismiss()
                 }
-
-                // 🔄 Insertar la nueva categoría antes del botón de agregar
-                itemsMutableList.add(itemsMutableList.size - 1, nuevaCategoria)
-
-                // 🔄 Actualizar el adapter con la nueva lista
-                listAdapter.updateList(itemsMutableList)
-
-                // 🔄 Actualizar tareas según la nueva categoría seleccionada
-                actualizarTareasSegunCategoriaSeleccionada()
-
-                dialog.dismiss()
-                Log.d("MainActivity", "Nueva categoría agregada: ${nuevaCategoria.nombre}")
             } else {
-                Toast.makeText(this, "Ingresa un nombre", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nombre vacío", Toast.LENGTH_SHORT).show()
             }
         }
         dialog.show()

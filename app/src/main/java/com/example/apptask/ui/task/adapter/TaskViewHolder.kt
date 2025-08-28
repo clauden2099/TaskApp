@@ -1,18 +1,17 @@
-package com.example.apptask
+package com.example.apptask.ui.task.adapter
 
-import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.text.category
+import com.example.apptask.R
+import com.example.apptask.data.Tarea
 
 class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val tvTask: TextView = view.findViewById(R.id.tvTask)
-    private val cbTask:CheckBox = view.findViewById(R.id.cbTask)
+    private val cbTask: CheckBox = view.findViewById(R.id.cbTask)
 
 
     fun render(task: Tarea, position: Int, onCheckChanged: (Int, Boolean) -> Unit) {
